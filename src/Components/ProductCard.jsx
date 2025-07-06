@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
           </select>
         </div>
 
-        {/* Button */}
+
         <div>
         {product.inStock ? (
   <button className="w-full py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:from-blue-700 hover:to-indigo-700 transition duration-300 transform hover:-translate-y-0.5 hover:shadow-lg">
