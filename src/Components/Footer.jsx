@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -6,7 +7,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         
         <div>
-          <h2 className="text-xl font-semibold text-white mb-2">Gadgets Heaven</h2>
+          <h2 className="text-xl font-semibold text-white mb-2">  <Link to="/" className="text-xl font-bold text-blue-600">
+              ShopEase
+            </Link></h2>
           <p className="text-sm">
             Explore the latest & greatest tech products curated for innovation
             lovers.
@@ -32,7 +35,7 @@ const Footer = () => {
       </div>
 
       <div className="text-center py-4 text-sm border-t border-gray-700">
-        © {new Date().getFullYear()} Gadgets Heaven. All rights reserved.
+        © {new Date().getFullYear()} ShopEase. All rights reserved.
       </div>
     </footer>
   );

@@ -1,27 +1,37 @@
-import React from "react";
-import { ShoppingCart, Heart } from "lucide-react";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Navbar = () => {
+const Navbar = ({ count}) => {
   return (
-    <nav className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white shadow-lg sticky top-0 z-50 mb-6">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-        
-        <h1 className="text-2xl font-bold tracking-wide">
-          <span className="text-white">📱 Gadgets</span>{" "}
-          <span className="text-yellow-300">Heaven</span>
-        </h1>
-
-        
-        <div className="flex items-center gap-4">
-          <button className="btn btn-sm btn-ghost text-white hover:bg-blue-600 transition">
-            <Heart size={18} />
-          </button>
-          <button className="btn btn-sm btn-ghost text-white hover:bg-blue-600 transition">
-            <ShoppingCart size={18} />
-          </button>
+    <nav className="bg-white shadow-lg sticky top-0 z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-shrink-0">
+            <Link to="/" className="text-xl font-bold text-blue-600">
+              ShopEase
+            </Link>
+          </div>
           
-        </div>
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Link to="/" className="text-gray-700 hover:text-blue-600 px-3 py-2">
+                Home
+              </Link>
+            </div>
+            
         
+            
+            {/* Cart Counter */}
+            <div className="relative">
+              <Link to="/cart" className="text-gray-700 hover:text-blue-600 px-3 py-2 flex items-center">
+                <span className="mr-1">🛒</span>
+                <span className="bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                  {count}
+                </span>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
   );

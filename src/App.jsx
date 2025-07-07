@@ -1,34 +1,28 @@
-
-import Footer from "./Components/Footer";
-import Navbar from "./Components/Navbar";
-import { products } from "./Data/products";
-import ProductCard from "./components/ProductCard";
+import { Routes, Route } from "react-router-dom";
 
 
+import Navbar from './Components/Navbar'
+import Footer from './Components/Footer'
+import ProductDetails from "./Components/ProductDetails";
+import ProductListing from "./Components/ProductListng";
+import { useState } from "react";
 
 function App() {
+        const [like, setLike] = useState(0)
+        const [count, setCount] = useState(0)
   return (
     <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800">
+      <Navbar like={like} count={count} />
       
-      
-      <Navbar />
-
-     
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 py-10">
-          <h1 className="text-4xl font-extrabold text-center text-blue-700 mb-10">
-            Featured Products
-          </h1>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-            {products.map((product, idx) => (
-              <ProductCard key={idx} product={product} />
-            ))}
-          </div>
+          <Routes>
+            <Route path="/" element={<ProductListing like={like} set={setLike} count={count} setCount={setCount} />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
+          </Routes>
         </div>
       </main>
 
-     
       <Footer />
     </div>
   );

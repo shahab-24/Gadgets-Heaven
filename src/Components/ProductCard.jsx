@@ -1,69 +1,119 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ product }) => {
-  const [selectedVariant, setSelectedVariant] = useState(product?.variants[0]);
+const ProductCard = ({ product, count, setCount }) => {
+  const navigate = useNavigate();
+  
+  // Default product data for safety
+  const defaultProduct = {
+    id: 0,
+    title: "Product Title",
+    price: 0,
+    image: "",
+    description: "",
+    rating: { rate: 0, count: 0 },
+    category: ""
+  };
+  
+  const safeProduct = product || defaultProduct;
   const [isLoading, setIsLoading] = useState(true);
+//   const [isLiked, setIsLiked] = useState(false);
 
+  // Image loading effect
   useEffect(() => {
-    const img = new Image();
-    img.src = product.image;
-    img.onload = () => setIsLoading(false);
-  }, [product.image]);
+    if (safeProduct.image) {
+      const img = new Image();
+      img.src = safeProduct.image;
+      img.onload = () => setIsLoading(false);
+      img.onerror = () => setIsLoading(false);
+    } else {
+      setIsLoading(false);
+    }
+  }, [safeProduct.image]);
+
+ 
+  // Handle buy now action
+  const handleBuyNow = (e) => {
+        e.stopPropagation();
+        navigate(`/products/${safeProduct.id}`, {
+          state: { product: safeProduct }
+        });
+      };
+    
+
+  // Handle add to cart
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+// console.log("cart clicked")
+    setCount(count + 1);
+    
+  };
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 max-w-xs w-full mx-auto border border-gray-100 overflow-hidden group">
-      {/* Image */}
-      <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-blue-50 to-white">
+    <div 
+      className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-full border border-gray-100 overflow-hidden group cursor-pointer"
+      OnClick={handleBuyNow}
+//       
+      role="button"
+      tabIndex={0}
+//    
+    >
+      {/* Image with loading state */}
+      <div className="relative h-48 w-full overflow-hidden bg-gradient-to-br from-gray-50 to-white">
         {isLoading ? (
-          <div className="skeleton w-full h-full"></div>
+          <div className="animate-pulse bg-gray-200 w-full h-full"></div>
         ) : (
           <img
-            src={product.image}
-            alt={product.name}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            src={safeProduct.image || "https://via.placeholder.com/300?text=No+Image"}
+            alt={safeProduct.title}
+            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 p-4"
+            loading="lazy"
           />
         )}
       </div>
 
-      {/* Card Body */}
-      <div className="p-4 space-y-3">
-        <h2 className="text-lg font-semibold text-gray-800 truncate">
-          {product.name}
-        </h2>
-        <p className="text-blue-600 font-bold text-md">${product.price}</p>
-
-        {/* Variant Select */}
-        <div>
-          <label className="block text-sm text-gray-600 font-medium mb-1">
-            Choose Variant
-          </label>
-          <select
-            className="select select-sm w-full rounded-md border border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-blue-700 bg-blue-100 text-sm"
-            value={selectedVariant}
-            onChange={(e) => setSelectedVariant(e.target.value)}
-          >
-            {product.variants.map((variant) => (
-              <option key={variant}>{variant}</option>
-            ))}
-          </select>
+      {/* Product info */}
+      <div className="p-4 space-y-2">
+        <div className="flex justify-between items-start">
+          <h2 className="text-lg font-semibold text-gray-800 line-clamp-1 flex-1">
+            {safeProduct.title}
+          </h2>
+          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded ml-2">
+            {safeProduct.category}
+          </span>
         </div>
+        
+        <p className="text-gray-600 text-sm line-clamp-2 min-h-[40px]">
+          {safeProduct.description}
+        </p>
+        
+        
+        
+        {/* Price */}
+        <p className="text-blue-600 font-bold text-lg mt-2">
+          ${safeProduct.price.toFixed(2)}
+        </p>
 
-
-        <div>
-        {product.inStock ? (
-  <button className="w-full py-2 text-sm font-semibold rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md hover:from-blue-700 hover:to-indigo-700 transition duration-300 transform hover:-translate-y-0.5 hover:shadow-lg">
-    🛒 Add to Cart
-  </button>
-) : (
-  <button className="w-full py-2 text-sm font-semibold rounded-full bg-gray-200 text-gray-500 border border-gray-300 cursor-not-allowed">
-    🚫 Out of Stock
-  </button>
-)}
-
+        {/* Action buttons */}
+        <div className="flex gap-2 mt-3">
+          <button 
+            onClick={handleAddToCart}
+            className="flex-1 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center gap-1"
+          >
+             Add to Cart
+          </button>
+          <button 
+            onClick={handleBuyNow}
+            className="flex-1 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center gap-1"
+          >
+             Buy Now
+          </button>
         </div>
       </div>
     </div>
   );
 };
+
+
 
 export default ProductCard;
